@@ -1,0 +1,7 @@
+.vscode
+logs
+airflow.cfg
+airflow.db
+unittests.cfg
+*_test123
+*.pyc
