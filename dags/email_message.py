@@ -2,9 +2,9 @@ from airflow import DAG
 from airflow.operators.email_operator import EmailOperator
 from datetime import datetime, timedelta
 
-from airflow.models import Variable
+import os
 
-email_to = Variable.get("operation_email")
+email_to = os.environ['OPERATION_EMAIL']
 
 start_date = datetime.now() - timedelta(days=1)
 

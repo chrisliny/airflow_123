@@ -4,18 +4,45 @@
 
 ---
 
+__Install virtualenvwrapper__ : https://virtualenvwrapper.readthedocs.io/en/latest/install.html
+
 ```bash
 mkproject -f -p `which python` airflow_123 
+```
 
-export AIRFLOW_HOME=`pwd`
+> For Macos, you may need to install the followings:
 
-pip install apache-airflow[postgres,s3,slack]
+>> ```bash
+>> brew update
+
+>> brew install freetds
+
+>> pip install cython
+
+>> pip install git+https://github.com/pymssql/pymssql
+>> ```
+
+```
+pip install apache-airflow[all]
+
+pip install psycopg2-binary
 
 ```
 
 ## Configuration
 
 ---
+
+```bash
+export AIRFLOW_HOME=`pwd`
+
+export OPERATION_EMAIL=operation@example.com
+
+export SLACK_API_TOKEN=XXXXXXXXXXXXX
+
+export AIRFLOW_CONN_AWS_DEFAULT='{"login": "access key", "password": "secret key", "region_name": "us-west-2"}'
+
+```
 
 To send email from airflow, you need to update the following smtp section of airflow.cfg
 
@@ -62,12 +89,11 @@ airflow scheduler > logs/schedule.log &
 
 ```
 
-## Deploy dags: email_message
+## Test dags: email_message
 
 ---
 
 ```bash
-airflow variables -s operation_email alert@example.com
 
 airflow list_dags
 
@@ -76,12 +102,11 @@ airflow list_tasks email_message
 airflow test email_message email_notification 2017-08-01
 ```
 
-## Deploy dags: slack_message
+## Test dags: slack_message
 
 ---
 
 ```bash
-export SLACK_API_TOKEN="XXXXXXXXXXXXX"
 
 airflow list_dags
 
@@ -92,3 +117,47 @@ airflow test slack_message slack_notification 2017-08-01
 
 ```
 
+## Test dags: s3_download
+
+---
+
+```bash
+
+airflow list_dags
+
+airflow list_tasks s3_download
+
+airflow test s3_download download 2017-08-01
+
+
+```
+
+## Test dags: s3_upload
+
+---
+
+```bash
+
+airflow list_dags
+
+airflow list_tasks s3_upload
+
+airflow test s3_upload upload 2017-08-01
+
+
+```
+
+## Test dags: postgres_to_s3
+
+---
+
+```bash
+
+airflow list_dags
+
+airflow list_tasks postgres_to_s3
+
+airflow test postgres_to_s3 process 2017-08-01
+
+
+```
