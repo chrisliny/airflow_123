@@ -23,21 +23,21 @@ default_args = {
 }
 
 dag = DAG(
-  's3_upload', 
+  'file_to_s3', 
   schedule_interval='@once',
   default_args=default_args
 )
 
-def upload(key, bucket_name, local_file):
-
+def download(key, bucket_name, local_file):
   hook = S3Hook(aws_conn_id='aws_default')
-  
-  # s3.load_string(str_data, key, bucket_name=bucket_name, encoding='utf-8', replace=True)
-  hook.load_file(local_file, key, bucket_name=bucket_name , replace=True)
+  data = hook.read_key(key, bucket_name)
+  with open(local_file, 'wb') as file:
+      file.write(data) 
+
 
 PythonOperator(
-  task_id='upload',
-  python_callable = upload,
-  op_args=['driver-data/timesheet-test.csv', 'wdt-datalake', local_file],
+  task_id='download',
+  python_callable = download,
+  op_args=['driver-data/timesheet.csv', 'wdt-datalake', local_file],
   dag=dag
 )

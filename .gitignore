@@ -5,3 +5,4 @@ airflow.db
 unittests.cfg
 *_test123
 *.pyc
+*.pid

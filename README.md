@@ -14,11 +14,8 @@ mkproject -f -p `which python` airflow_123
 
 >> ```bash
 >> brew update
-
 >> brew install freetds
-
 >> pip install cython
-
 >> pip install git+https://github.com/pymssql/pymssql
 >> ```
 
@@ -117,7 +114,7 @@ airflow test slack_message slack_notification 2017-08-01
 
 ```
 
-## Test dags: s3_download
+## Test dags: s3_to_file
 
 ---
 
@@ -125,14 +122,14 @@ airflow test slack_message slack_notification 2017-08-01
 
 airflow list_dags
 
-airflow list_tasks s3_download
+airflow list_tasks file_to_s3
 
-airflow test s3_download download 2017-08-01
+airflow test file_to_s3 download 2017-08-01
 
 
 ```
 
-## Test dags: s3_upload
+## Test dags: file_to_s3
 
 ---
 
@@ -140,9 +137,9 @@ airflow test s3_download download 2017-08-01
 
 airflow list_dags
 
-airflow list_tasks s3_upload
+airflow list_tasks file_to_s3
 
-airflow test s3_upload upload 2017-08-01
+airflow test file_to_s3 upload 2017-08-01
 
 
 ```
@@ -158,6 +155,49 @@ airflow list_dags
 airflow list_tasks postgres_to_s3
 
 airflow test postgres_to_s3 process 2017-08-01
+
+
+```
+
+## Test dags: hdfs_to_hive
+
+---
+
+```bash
+
+airflow list_dags
+
+airflow list_tasks hdfs_to_hive
+
+airflow backfill hdfs_to_hive -s 2017-08-01 -e 2017-08-02
+
+
+```
+
+## Test dags: hdfs_to_mysql
+
+---
+
+Using HiveToMySqlTransfer, you need to install the followings:
+
+```bash
+
+## fix struct error
+pip install thrift==0.9.3
+
+pip install thrift_sasl
+
+```
+
+HiveToMySqlTransfer is using hiveserver2. You need to have hiveserver2 running to test this dag:
+
+```bash
+
+airflow list_dags
+
+airflow list_tasks hdfs_to_mysql
+
+airflow backfill hdfs_to_mysql -s 2017-08-01 -e 2017-08-02
 
 
 ```
