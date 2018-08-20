@@ -6,3 +6,4 @@ unittests.cfg
 *_test123
 *.pyc
 *.pid
+*.ipynb*
