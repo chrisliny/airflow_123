@@ -86,7 +86,7 @@ airflow scheduler > logs/schedule.log &
 
 ```
 
-## Test dags: email_message
+## Dag: email_message
 
 ---
 
@@ -99,7 +99,7 @@ airflow list_tasks email_message
 airflow test email_message email_notification 2017-08-01
 ```
 
-## Test dags: slack_message
+## Dag: slack_message
 
 ---
 
@@ -114,7 +114,7 @@ airflow test slack_message slack_notification 2017-08-01
 
 ```
 
-## Test dags: s3_to_file
+## Dag: s3_to_file
 
 ---
 
@@ -129,7 +129,7 @@ airflow test file_to_s3 download 2017-08-01
 
 ```
 
-## Test dags: file_to_s3
+## Dag: file_to_s3
 
 ---
 
@@ -144,7 +144,7 @@ airflow test file_to_s3 upload 2017-08-01
 
 ```
 
-## Test dags: postgres_to_s3
+## Dag: postgres_to_s3
 
 ---
 
@@ -159,7 +159,7 @@ airflow test postgres_to_s3 process 2017-08-01
 
 ```
 
-## Test dags: hdfs_to_hive
+## Dag: hdfs_to_hive
 
 ---
 
@@ -174,7 +174,7 @@ airflow backfill hdfs_to_hive -s 2017-08-01 -e 2017-08-02
 
 ```
 
-## Test dags: hdfs_to_mysql
+## Dag: hdfs_to_mysql
 
 ---
 
@@ -201,3 +201,57 @@ airflow backfill hdfs_to_mysql -s 2017-08-01 -e 2017-08-02
 
 
 ```
+
+## Dag: presto_to_mysql
+
+---
+
+```bash
+
+airflow list_dags
+
+airflow list_tasks presto_to_mysql
+
+airflow backfill presto_to_mysql -s 2017-08-01 -e 2017-08-02
+
+
+```
+
+
+## Dag: mysql_to_hive
+
+---
+
+* Using template_fields defined in MySqlToHiveTransfer, you can specify template in these fields.
+
+    ```python
+    template_fields = ('sql', 'partition', 'hive_table')
+
+    ```
+
+* Using template_ext defined in MySqlToHiveTransfer, you can put template in template files with extension .sql
+
+    ```python
+    template_ext = ('.sql',)
+
+    ```
+
+* To use template file, you need to define template_searchpath argument for dag
+
+    ```python
+    template_searchpath='templates/mysql_to_hive'
+
+    ```
+
+* To test
+
+    ```bash
+
+    airflow list_dags
+
+    airflow list_tasks mysql_to_hive
+
+    airflow backfill mysql_to_hive -s 2017-08-01 -e 2017-08-02
+
+
+    ```

@@ -1,0 +1,1 @@
+select *, "{{ execution_date }}" as execution_date from airflow_123.drivers
