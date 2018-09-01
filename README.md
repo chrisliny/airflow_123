@@ -1,4 +1,4 @@
-# Airflow 123
+# Airflow Basics
 
 ## Installation
 
@@ -24,6 +24,7 @@ pip install apache-airflow[all]
 
 pip install psycopg2-binary
 
+
 ```
 
 ## Configuration
@@ -33,39 +34,8 @@ pip install psycopg2-binary
 ```bash
 export AIRFLOW_HOME=`pwd`
 
-export OPERATION_EMAIL=operation@example.com
-
-export SLACK_API_TOKEN=XXXXXXXXXXXXX
-
-export AIRFLOW_CONN_AWS_DEFAULT='{"login": "access key", "password": "secret key", "region_name": "us-west-2"}'
 
 ```
-
-To send email from airflow, you need to update the following smtp section of airflow.cfg
-
-> [smtp]
-
-> `` # `` If you want airflow to send emails on retries, failure, and you want to use
-
-> `` # `` the airflow.utils.email.send_email_smtp function, you have to configure an
-
-> `` # `` smtp server here
-
-> smtp_host = localhost
-
-> smtp_starttls = True
-
-> smtp_ssl = False
-
-> `` # `` Uncomment and set the user/pass settings if you want to use SMTP AUTH
-
-> `` # `` smtp_user = airflow
-
-> `` # `` smtp_password = airflow
-
-> smtp_port = 25
-
-> smtp_mail_from = airflow@example.com
 
 ## Initialization
 
@@ -73,6 +43,8 @@ To send email from airflow, you need to update the following smtp section of air
 
 ```
 airflow initdb
+
+
 ```
 
 ## Start Airflow Webserver and Scheduler
@@ -84,67 +56,132 @@ airflow webserver -p 8888 > logs/webserver.log &
 
 airflow scheduler > logs/schedule.log &
 
+
 ```
 
-## Dag: email_message
+## Email Message
 
 ---
 
-```bash
+* Configuration
 
-airflow list_dags
 
-airflow list_tasks email_message
+    ```bash
 
-airflow test email_message email_notification 2017-08-01
-```
+    export OPERATION_EMAIL=operation@example.com
 
-## Dag: slack_message
+    ```
+
+    To send email from airflow, you need to update the following smtp section of airflow.cfg
+
+    > [smtp]
+
+    > `` # `` If you want airflow to send emails on retries, failure, and you want to use
+
+    > `` # `` the airflow.utils.email.send_email_smtp function, you have to configure an
+
+    > `` # `` smtp server here
+
+    > smtp_host = localhost
+
+    > smtp_starttls = True
+
+    > smtp_ssl = False
+
+    > `` # `` Uncomment and set the user/pass settings if you want to use SMTP AUTH
+
+    > `` # `` smtp_user = airflow
+
+    > `` # `` smtp_password = airflow
+
+    > smtp_port = 25
+
+    > smtp_mail_from = airflow@example.com
+
+* Test Email
+
+    ```bash
+
+    airflow list_dags
+
+    airflow list_tasks email_message
+
+    airflow test email_message email_notification 2017-08-01
+
+
+    ```
+
+## Slack Message
 
 ---
 
-```bash
+* Configuration
 
-airflow list_dags
-
-airflow list_tasks slack_message
-
-airflow test slack_message slack_notification 2017-08-01
+    * Get Slack Token
+    
+        Follow this instruction: https://github.com/chrisliny/python_slack_api_basics
 
 
-```
+    * Set Up Environment Variable
 
-## Dag: s3_to_file
+        ```bash
+
+        export SLACK_API_TOKEN=XXXXXXXXXXXXX
+
+        ```
+
+* Test Slack Message
+
+    ```bash
+
+    airflow list_dags
+
+    airflow list_tasks slack_message
+
+    airflow test slack_message slack_notification 2017-08-01
+
+
+    ```
+
+## S3 Files
 
 ---
 
-```bash
-
-airflow list_dags
-
-airflow list_tasks file_to_s3
-
-airflow test file_to_s3 download 2017-08-01
+* Configuration
 
 
-```
+    ```bash
 
-## Dag: file_to_s3
-
----
-
-```bash
-
-airflow list_dags
-
-airflow list_tasks file_to_s3
-
-airflow test file_to_s3 upload 2017-08-01
+    export AIRFLOW_CONN_AWS_DEFAULT='{"login": "access key", "password": "secret key", "region_name": "us-west-2"}'
 
 
-```
+* Test Downloading S3 File
 
-## Dag: postgres_to_s3
+    ```bash
+
+    airflow list_dags
+
+    airflow list_tasks file_to_s3
+
+    airflow test file_to_s3 download 2017-08-01
+
+
+    ```
+
+* Test Sending File To S3
+
+    ```bash
+
+    airflow list_dags
+
+    airflow list_tasks file_to_s3
+
+    airflow test file_to_s3 upload 2017-08-01
+
+
+    ```
+
+## Postgres and S3
 
 ---
 
@@ -159,7 +196,7 @@ airflow test postgres_to_s3 process 2017-08-01
 
 ```
 
-## Dag: hdfs_to_hive
+## HDFS and Hive
 
 ---
 
@@ -174,7 +211,7 @@ airflow backfill hdfs_to_hive -s 2017-08-01 -e 2017-08-02
 
 ```
 
-## Dag: hdfs_to_mysql
+## HDFS and Mysql
 
 ---
 
@@ -202,7 +239,7 @@ airflow backfill hdfs_to_mysql -s 2017-08-01 -e 2017-08-02
 
 ```
 
-## Dag: presto_to_mysql
+## Presto and Mysql
 
 ---
 
@@ -218,7 +255,7 @@ airflow backfill presto_to_mysql -s 2017-08-01 -e 2017-08-02
 ```
 
 
-## Dag: mysql_to_hive
+## Mysql and Hive
 
 ---
 
