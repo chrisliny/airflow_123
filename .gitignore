@@ -7,3 +7,5 @@ unittests.cfg
 *.pyc
 *.pid
 *.ipynb*
+.idea
+.gitignore
